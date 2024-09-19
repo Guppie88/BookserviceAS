@@ -38,16 +38,10 @@ public class BooksController {
     public ResponseEntity<Books> createNewBook(@RequestBody Books newBook) {
         Author author = newBook.getAuthor();
 
-        // Check if author exists, if not create a new one
-        if (author != null) {
-            if (author.getId() != 0) {
-                // Fetch existing author by ID
-                author = authorService.getAuthorById(author.getId()).orElse(author);
-            } else {
-                // Save new author
-                author = authorService.saveAuthor(author);
-            }
-            newBook.setAuthor(author);  // Set the author to the book
+        // Spara eller skapa en ny författare om det behövs
+        if (author != null && author.getId() == 0) {
+            author = authorService.saveAuthor(author);
+            newBook.setAuthor(author);  // Länka ny författare till boken
         }
 
         Books savedBook = bookService.saveBook(newBook);
@@ -56,31 +50,10 @@ public class BooksController {
 
     // Update an existing book (partial update)
     @PatchMapping("/{id}")
-    public ResponseEntity<Books> updateOneBook(@PathVariable Long id, @RequestBody Books newBook) {
-        Optional<Books> existingBookOpt = bookService.getOneBook(id);
-
-        if (existingBookOpt.isPresent()) {
-            Books existingBook = existingBookOpt.get();
-            existingBook.setTitle(newBook.getTitle());
-            existingBook.setISBN(newBook.getISBN());
-
-            Author updatedAuthor = newBook.getAuthor();
-            if (updatedAuthor != null) {
-                if (updatedAuthor.getId() != 0) {
-                    // Fetch existing author by ID
-                    updatedAuthor = authorService.getAuthorById(updatedAuthor.getId()).orElse(updatedAuthor);
-                } else {
-                    // Save new author
-                    updatedAuthor = authorService.saveAuthor(updatedAuthor);
-                }
-                existingBook.setAuthor(updatedAuthor);  // Set the author to the book
-            }
-
-            Books savedBook = bookService.saveBook(existingBook);
-            return ResponseEntity.ok(savedBook);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Books> updateOneBook(@PathVariable Long id,
+                                               @RequestBody Books newBook) {
+        Books patchedBook = bookService.patchBook(newBook, id);
+        return ResponseEntity.ok(patchedBook);
     }
 
     // Delete a specific book by ID
