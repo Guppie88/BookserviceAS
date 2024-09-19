@@ -26,14 +26,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/BookserviceAS/molndalAPIExample/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
       - name: Install dependencies and run tests
-        working-directory: BookserviceAS/molndalAPIExample  # Sätt arbetskatalog till BookserviceAS/molndalAPIExample
+        working-directory: ./BookserviceAS  # Ställ in rätt arbetskatalog (om BookserviceAS innehåller molndalAPIExample)
         run: mvn clean install  # Kör bygg och tester
 
       - name: Verify Tests Results
         if: failure()
-        run: cat BookserviceAS/molndalAPIExample/target/surefire-reports/*.txt  # Visar testresultat om något går fel
+        run: cat ./BookserviceAS/target/surefire-reports/*.txt  # Visar testresultat om något går fel
