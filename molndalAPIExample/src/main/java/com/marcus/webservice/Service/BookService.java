@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class BookService {
 
     private final BooksRepo booksRepo;
@@ -18,30 +18,27 @@ public class BookService {
         return booksRepo.findAll();
     }
 
-    public Optional<Books> getOneBook(Long id) {
-        return Optional.of(booksRepo.findById(id).orElse(new Books()));
+    public Optional<Books> getOneBook(long id) {
+        return booksRepo.findById(id);
     }
 
     public Books saveBook(Books book) {
         return booksRepo.save(book);
     }
 
-    public Books patchBook(Books book, Long id) {
-        Optional<Books> currentBook = booksRepo.findById(id);
-
-        //TODO Check we get an actually book back
-
-        if (!book.getTitle().equals(currentBook.get().getTitle())) currentBook.get().setTitle(book.getTitle());
-        if (!book.getISBN().equals(currentBook.get().getISBN())) currentBook.get().setISBN(book.getISBN());
-
-        return booksRepo.save(currentBook.get());
+    public Books patchBook(Books newBook, Long id) {
+        Optional<Books> optionalBook = booksRepo.findById(id);
+        if (optionalBook.isPresent()) {
+            Books book = optionalBook.get();
+            book.setTitle(newBook.getTitle());
+            book.setISBN(newBook.getISBN());
+            book.setAuthor(newBook.getAuthor());
+            return booksRepo.save(book);
+        }
+        return null;  // Hantera fel om boken inte finns
     }
 
-    public void removeBook(Long id) {
+    public void removeBook(long id) {
         booksRepo.deleteById(id);
-    }
-
-    public void removeBook(Books book) {
-        booksRepo.deleteById(book.getId());
     }
 }

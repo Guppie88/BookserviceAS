@@ -14,22 +14,26 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4  # Uppdaterad till senaste versionen
+        uses: actions/checkout@v4
 
       - name: Set up JDK 22
-        uses: actions/setup-java@v4  # Uppdaterad till senaste versionen
+        uses: actions/setup-java@v4
         with:
           java-version: '22'
           distribution: 'temurin'
 
       - name: Cache Maven packages
-        uses: actions/cache@v4  # Uppdaterad till senaste versionen
+        uses: actions/cache@v4
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/BookserviceAS/molndalAPIExample/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
       - name: Install dependencies and run tests
-        working-directory: molndalAPIExample  # Sätt arbetskatalog till molndalAPIExample
-        run: mvn clean install  # Ta bort "-P test"
+        working-directory: BookserviceAS/molndalAPIExample  # Sätt arbetskatalog till BookserviceAS/molndalAPIExample
+        run: mvn clean install  # Kör bygg och tester
+
+      - name: Verify Tests Results
+        if: failure()
+        run: cat BookserviceAS/molndalAPIExample/target/surefire-reports/*.txt  # Visar testresultat om något går fel
