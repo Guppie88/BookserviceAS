@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '22'
-          distribution: ''
+          distribution: 'temurin' # Lägg till denna rad
 
       - name: Cache Maven packages
         uses: actions/cache@v3
