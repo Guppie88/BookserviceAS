@@ -26,10 +26,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/webservice.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
       - name: Install dependencies and run tests
-        working-directory: molndalAPIExample # Sätt arbetskatalogen till molndalAPIExample
-        run: mvn clean install -f webservice.xml # Anger specifikt att Maven ska använda webservice.xml
+        working-directory: molndalAPIExample  # Sätt arbetskatalog till molndalAPIExample
+        run: mvn clean install  # Kör Maven och leta efter pom.xml i den katalogen
