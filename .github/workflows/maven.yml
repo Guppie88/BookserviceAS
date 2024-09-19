@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Change directory to the project folder
-        run: cd BookserviceAS # Se till att BookserviceAS är rätt katalog
+        run: cd molndalAPIExample  # Byt till rätt underkatalog
 
       - name: Install dependencies and run tests
         run: mvn clean install
