@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       java: corretto-17  # Se till att använda Java 17
     commands:
-      - echo "Installing custom Corretto(OpenJDK) version 17 ..."
+      - echo "Installing custom Corretto (OpenJDK) version 17 ..."
       - apt-get update
       - apt-get install -y java-17-amazon-corretto-jdk  # Rätt stavning på paketnamnet
       - cd molndalAPIExample  # Navigera till rätt katalog
