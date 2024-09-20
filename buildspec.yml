@@ -1,7 +1,10 @@
+
 version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      java: corretto-17  # Se till att använda Java 17
     commands:
       - echo Installing dependencies
       - cd molndalAPIExample  # Navigera till rätt katalog
