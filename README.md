@@ -72,8 +72,7 @@ Vi använder **GitHub Actions** för kontinuerlig integration och testning. Work
 
 ## Författare
 
-- **Ditt Namn** - [GitHub-profil](https://github.com/ditt-användarnamn)
+- **Andrea Sveinsdottir** - [GitHub-profil](https://github.com/Guppie88)
 
 ---
 
-Denna README kan justeras baserat på hur klientapplikationen utvecklas och om du lägger till fler funktioner eller teknologier i projektet.
