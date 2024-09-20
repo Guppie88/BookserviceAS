@@ -1,7 +1,3 @@
-Här är ett utkast till din README-fil för projektet **BookserviceAS**:
-
----
-
 # BookserviceAS
 
 **BookserviceAS** är ett skolprojekt där vi bygger ett CRUD API för hantering av böcker och författare med hjälp av Spring Boot, Spring Data JPA och MySQL. Projektet inkluderar även en klientapplikation och deployas manuellt på AWS, där både kod och databas hanteras.
@@ -9,12 +5,12 @@ Här är ett utkast till din README-fil för projektet **BookserviceAS**:
 ## Funktioner
 
 - CRUD-funktionalitet för böcker och författare:
-    - Skapa, läsa, uppdatera och ta bort böcker och författare.
+    - Skapa, uppdatera och ta bort böcker och författare.
     - Böcker kan kopplas till författare och hanteras dynamiskt.
 
 - Klientapplikation (under utveckling):
     - Användargränssnitt för att interagera med API:et.
-    - Möjlighet att lägga till, uppdatera och ta bort böcker samt visa boklistor.
+    - Möjlighet att lägga till och ta bort böcker samt visa boklistor.
 
 ## Teknologier
 
@@ -72,8 +68,7 @@ Vi använder **GitHub Actions** för kontinuerlig integration och testning. Work
 
 ## Författare
 
-- **Ditt Namn** - [GitHub-profil](https://github.com/ditt-användarnamn)
+- **Andrea Sveinsdottir** - [GitHub-profil](https://github.com/Guppie88)
 
 ---
 
-Denna README kan justeras baserat på hur klientapplikationen utvecklas och om du lägger till fler funktioner eller teknologier i projektet.
