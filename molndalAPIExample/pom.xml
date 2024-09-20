@@ -18,10 +18,11 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>22</java.version> <!-- Uppdaterat till Java 22 -->
-		<javafx.version>20.0.2</javafx.version> <!-- Lägger till JavaFX-version -->
+		<maven.compiler.source>17</maven.compiler.source> <!-- Byt till 17 -->
+		<maven.compiler.target>17</maven.compiler.target> <!-- Byt till 17 -->
+		<java.version>17</java.version> <!-- Byt till 17 -->
+		<javafx.version>20.0.2</javafx.version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
