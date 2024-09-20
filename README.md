@@ -9,12 +9,12 @@ Här är ett utkast till din README-fil för projektet **BookserviceAS**:
 ## Funktioner
 
 - CRUD-funktionalitet för böcker och författare:
-    - Skapa, läsa, uppdatera och ta bort böcker och författare.
+    - Skapa, uppdatera och ta bort böcker och författare.
     - Böcker kan kopplas till författare och hanteras dynamiskt.
 
 - Klientapplikation (under utveckling):
     - Användargränssnitt för att interagera med API:et.
-    - Möjlighet att lägga till, uppdatera och ta bort böcker samt visa boklistor.
+    - Möjlighet att lägga till och ta bort böcker samt visa boklistor.
 
 ## Teknologier
 
