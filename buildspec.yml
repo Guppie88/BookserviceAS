@@ -3,18 +3,19 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "Installing dependencies"
+      - echo Installing dependencies
+      - cd molndalAPIExample  # Navigera till rätt katalog
       - mvn install -DskipTests
 
   build:
     commands:
-      - echo "Build started on `date`"
+      - echo Build started on `date`
       - mvn clean package
 
   post_build:
     commands:
-      - echo "Build completed on `date`"
+      - echo Build completed on `date`
 
 artifacts:
   files:
-    - target/*.jar
+    - molndalAPIExample/target/*.jar  # Uppdatera sökvägen till artifacts om det behövs
