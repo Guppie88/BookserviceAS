@@ -4,15 +4,15 @@ phases:
   install:
     runtime-versions:
       java: corretto-17  # Använd Java 17
+  pre_build:
     commands:
-      - echo "Installing dependencies..."
-      - cd molndalAPIExample  # Navigera till rätt katalog
-      - mvn install -DskipTests
-
+      - echo "Nothing to do in the pre_build phase..."  # Meddelande för pre_build-fasen
   build:
     commands:
       - echo "Build started on `date`"
-      - mvn clean package
+      - cd molndalAPIExample  # Navigera till rätt katalog
+      - mvn install -DskipTests  # Installera beroenden utan att köra tester
+      - mvn clean package  # Bygg paketet
 
   post_build:
     commands:
@@ -20,4 +20,5 @@ phases:
 
 artifacts:
   files:
-    - molndalAPIExample/target/*.jar  # Sökväg till artifacts
+    - molndalAPIExample/target/webservice-app.jar  # Sökväg till artifact
+  discard-paths: yes  # Ta bort sökvägar från artifacts
