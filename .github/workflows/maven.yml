@@ -16,10 +16,10 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4  # Uppdaterad till senaste versionen
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4  # Uppdaterad till senaste versionen
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Cache Maven packages
@@ -29,6 +29,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
       - name: Install dependencies and run tests
         working-directory: molndalAPIExample  # Sätt arbetskatalog till molndalAPIExample
-        run: mvn clean install  # Ta bort "-P test"
+        run: mvn clean install  # Kör mvn clean install för att installera beroenden och köra tester
