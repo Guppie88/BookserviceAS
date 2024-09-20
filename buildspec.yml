@@ -1,4 +1,3 @@
-
 version: 0.2
 
 phases:
@@ -6,18 +5,20 @@ phases:
     runtime-versions:
       java: corretto-17  # Se till att använda Java 17
     commands:
-      - echo Installing dependencies
+      - echo "Installing custom Corretto(OpenJDK) version 17 ..."
+      - apt-get update
+      - apt-get install -y java-17-amazon-corretto-jdk  # Rätt stavning på paketnamnet
       - cd molndalAPIExample  # Navigera till rätt katalog
       - mvn install -DskipTests
 
   build:
     commands:
-      - echo Build started on `date`
+      - echo "Build started on `date`"
       - mvn clean package
 
   post_build:
     commands:
-      - echo Build completed on `date`
+      - echo "Build completed on `date`"
 
 artifacts:
   files:
