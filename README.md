@@ -1,7 +1,3 @@
-Här är ett utkast till din README-fil för projektet **BookserviceAS**:
-
----
-
 # BookserviceAS
 
 **BookserviceAS** är ett skolprojekt där vi bygger ett CRUD API för hantering av böcker och författare med hjälp av Spring Boot, Spring Data JPA och MySQL. Projektet inkluderar även en klientapplikation och deployas manuellt på AWS, där både kod och databas hanteras.
