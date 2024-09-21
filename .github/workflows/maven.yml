@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v4  # Uppdaterad till senaste versionen
         with:
           java-version: '21'
-          distribution: 'temurin'
+          distribution: 'temurin'  # Använder Temurin JDK
 
       - name: Cache Maven packages
         uses: actions/cache@v4  # Uppdaterad till senaste versionen
@@ -31,5 +31,5 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Install dependencies and run tests
-        working-directory: molndalAPIExample  # Sätt arbetskatalog till molndalAPIExample
+        working-directory: molndalAPIExample  # Uppdaterad katalog till molndalAPIExample eller molndal books
         run: mvn clean install  # Kör mvn clean install för att installera beroenden och köra tester

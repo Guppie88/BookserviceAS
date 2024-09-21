@@ -3,21 +3,20 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto21  # Använd Corretto 21
+      java: corretto21  # Använd Corretto 21 för att matcha med workflow-inställningen
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
   build:
     commands:
       - echo Build started on `date`
-      - cd molndalAPIExample  # Navigera till rätt katalog
-      - mvn install
-      - mvn clean package
+      - cd molndalAPIExample  # Navigera till rätt katalog (molndalAPIExample eller molndal books)
+      - mvn clean package  # Bygg och paketera applikationen
   post_build:
     commands:
       - echo Build completed on `date`
 
 artifacts:
   files:
-    - molndalAPIExample/target/webservice-app.jar
+    - molndalAPIExample/target/webservice-app.jar  # Kontrollera att .jar-filen verkligen heter så
   discard-paths: yes
