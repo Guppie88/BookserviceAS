@@ -63,7 +63,6 @@ Vi använder **GitHub Actions** för kontinuerlig integration och testning. Work
 ## Framtida arbete
 
 - Färdigställande av klientapplikationen.
-- Förbättrad säkerhet och autentisering.
 - Automatisering av deployment till AWS med CI/CD.
 
 ## Författare
