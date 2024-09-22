@@ -6,17 +6,18 @@ phases:
       java: corretto21  # Använd Corretto 21 för att matcha med workflow-inställningen
   pre_build:
     commands:
-      - echo Nothing to do in the pre_build phase...
+      - echo Preparing the build environment...
   build:
     commands:
       - echo Build started on `date`
-      - cd molndalAPIExample  # Navigera till rätt katalog (molndalAPIExample eller molndal books)
-      - mvn clean package  # Bygg och paketera applikationen
+      - mvn clean install  # Bygg hela multimodulprojektet
+      - echo Build and packaging completed
   post_build:
     commands:
       - echo Build completed on `date`
 
 artifacts:
   files:
-    - molndalAPIExample/target/webservice-app.jar  # Kontrollera att .jar-filen verkligen heter så
+    - BookserviceAS/target/*.jar  # Om BookserviceAS producerar en .jar-fil
+    - molndalAPIExample/target/*.jar  # Om molndalAPIExample producerar en .jar-fil
   discard-paths: yes
