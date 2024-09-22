@@ -1,32 +1,33 @@
-version: 0.2
-
-phases:
-  install:
-    runtime-versions:
-      java: corretto21  # AnvÃ¤nd Corretto 21
-
-  pre_build:
-    commands:
-      - echo Nothing to do in the pre_build phase...
-
-  build:
-    commands:
-      - echo Build started on `date`
-      - cd molndalAPIExample  # Navigera till rÃ¤tt katalog
-      - mvn install
-      - mvn clean package
-
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Uploading artifacts to S3...
-      - aws s3 cp target/webservice-app.jar s3://elasticbeanstalk-eu-north-1-147997133062/ --recursive
-      - echo Creating a new application version in Elastic Beanstalk...
-      - aws elasticbeanstalk create-application-version --application-name BookserviceAS --version-label `date +%Y%m%d%H%M%S` --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="molndalAPIExample/target/webservice-app.jar"
-      - echo Updating Elastic Beanstalk environment...
-      - aws elasticbeanstalk update-environment --environment-name BookserviceAS --version-label `date +%Y%m%d%H%M%S`
-
-artifacts:
-  files:
-    - molndalAPIExample/target/webservice-app.jar
-  discard-paths: yes
+"version: 0.2" 
+"" 
+"phases:" 
+"  install:" 
+"    runtime-versions:" 
+"      java: corretto21  # Anv„nd Corretto 21" 
+"" 
+"  pre_build:" 
+"    commands:" 
+"      - echo Nothing to do in the pre_build phase..." 
+"" 
+"  build:" 
+"    commands:" 
+"      - echo Build started on \`date\`" 
+"      - cd molndalAPIExample  # Navigera till r„tt katalog" 
+"      - mvn install" 
+"      - mvn clean package" 
+"      - ls target  # Verifiera att artefakten finns" 
+"" 
+"  post_build:" 
+"    commands:" 
+"      - echo Build completed on \`date\`" 
+"      - echo Uploading artifacts to S3..." 
+"      - aws s3 cp target/*.jar s3://elasticbeanstalk-eu-north-1-147997133062/ --recursive" 
+"      - echo Creating a new application version in Elastic Beanstalk..." 
+"      - aws elasticbeanstalk create-application-version --application-name BookserviceAS --version-label \`date +%Y%m%d%H%M%S\` --source-bundle S3Bucket=\"elasticbeanstalk-eu-north-1-147997133062\",S3Key=\"molndalAPIExample/target/*.jar\"" 
+"      - echo Updating Elastic Beanstalk environment..." 
+"      - aws elasticbeanstalk update-environment --environment-name BookserviceAS --version-label \`date +%Y%m%d%H%M%S\`" 
+"" 
+"artifacts:" 
+"  files:" 
+"    - molndalAPIExample/target/*.jar" 
+"  discard-paths: yes" 
