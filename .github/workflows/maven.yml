@@ -21,7 +21,6 @@ jobs:
         with:
           java-version: '21"
           distribution: 'temurin'  # Använder Temurin JDK
-          distribution: ''
 
       - name: Cache Maven packages
         uses: actions/cache@v4  # Uppdaterad till senaste versionen
