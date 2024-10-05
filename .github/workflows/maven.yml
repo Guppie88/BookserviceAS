@@ -14,16 +14,16 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4  # Uppdaterad till senaste versionen
+        uses: actions/checkout@v4  # Senaste versionen av GitHub Actions Checkout
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4  # Uppdaterad till senaste versionen
+        uses: actions/setup-java@v4  # Senaste versionen av Java Setup Action
         with:
           java-version: '21'
-          distribution: 'temurin'  # Använder Temurin JDK
+          distribution: 'temurin'
 
       - name: Cache Maven packages
-        uses: actions/cache@v4  # Uppdaterad till senaste versionen
+        uses: actions/cache@v4  # Senaste versionen av Cache Action
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -31,13 +31,5 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Install dependencies and run tests
-        run: mvn clean install  # Bygger och kör tester för Bookservice-applikationen
-
-      - name: Package the application
-        run: mvn clean package  # Paketerar applikationen
-
-      - name: Upload artifact to S3 and deploy to Elastic Beanstalk
-        run: |
-          aws s3 cp target/webservice-app.jar s3://elasticbeanstalk-eu-north-1-147997133062/ --recursive
-          aws elasticbeanstalk create-application-version --application-name BookserviceAS --version-label `date +%Y%m%d%H%M%S` --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="target/webservice-app.jar"
-          aws elasticbeanstalk update-environment --environment-name BookserviceAS --version-label `date +%Y%m%d%H%M%S`
+        working-directory: molndalAPIExample  # Detta säkerställer att Maven körs i rätt katalog
+        run: mvn clean install  # Kör mvn clean install för att bygga och testa

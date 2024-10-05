@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto21  # Använder Corretto 21
+      java: corretto21
 
   pre_build:
     commands:
@@ -12,20 +12,21 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn clean install  # Bygger Bookservice-applikationen
-      - mvn clean package  # Paketerar applikationen
+      - cd molndalAPIExample  # Navigera till molndalAPIExample-katalogen för att hitta pom.xml
+      - mvn clean install
+      - mvn clean package
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Uploading artifacts to S3...
-      - aws s3 cp target/webservice-app.jar s3://elasticbeanstalk-eu-north-1-147997133062/ --recursive
+      - aws s3 cp molndalAPIExample/target/webservice-app.jar s3://elasticbeanstalk-eu-north-1-147997133062/ --recursive
       - echo Creating a new application version in Elastic Beanstalk...
-      - aws elasticbeanstalk create-application-version --application-name BookserviceAS --version-label `date +%Y%m%d%H%M%S` --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="target/webservice-app.jar"
+      - aws elasticbeanstalk create-application-version --application-name BookserviceAS --version-label `date +%Y%m%d%H%M%S` --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="molndalAPIExample/target/webservice-app.jar"
       - echo Updating Elastic Beanstalk environment...
       - aws elasticbeanstalk update-environment --environment-name BookserviceAS --version-label `date +%Y%m%d%H%M%S`
 
 artifacts:
   files:
-    - target/webservice-app.jar
+    - molndalAPIExample/target/webservice-app.jar
   discard-paths: yes
