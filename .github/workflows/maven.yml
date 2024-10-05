@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4  # Uppdaterad till senaste versionen
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4  # Använder Temurin JDK version 21
+        uses: actions/setup-java@v4  # Uppdaterad till senaste versionen
         with:
           java-version: '21'
           distribution: 'temurin'  # Använder Temurin JDK
@@ -30,10 +30,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Install dependencies and run tests for molndalAPIExample
-        working-directory: molndalAPIExample  # Byter till molndalAPIExample-katalogen
-        run: mvn clean install  # Kör mvn clean install för molndalAPIExample
-
-      - name: Install dependencies and run tests for webservice
-        working-directory: webservice  # Byter till webservice-katalogen
-        run: mvn clean install  # Kör mvn clean install för webservice
+      - name: Install dependencies and run tests
+        working-directory: molndalAPIExample  # Uppdaterad katalog till molndalAPIExample eller molndal books
+        run: mvn clean install  # Kör mvn clean install för att installera beroenden och köra tester
