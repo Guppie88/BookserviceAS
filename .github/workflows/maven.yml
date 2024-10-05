@@ -31,5 +31,4 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Install dependencies and run tests
-        working-directory: molndalAPIExample  # Detta säkerställer att Maven körs i rätt katalog
         run: mvn clean install  # Kör mvn clean install för att bygga och testa
