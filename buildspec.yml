@@ -12,8 +12,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - cd molndalAPIExample  # Byter till molndalAPIExample-katalogen där pom.xml ligger
-      - mvn clean install     # Kör mvn install från molndalAPIExample-katalogen
+      - cd molndalAPIExample  # Byt till katalogen där pom.xml finns
+      - mvn clean install     # Kör mvn install från rätt katalog
       - mvn clean package     # Paketera applikationen
 
   post_build:
