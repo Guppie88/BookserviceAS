@@ -31,5 +31,13 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Install dependencies and run tests
-        working-directory: molndalAPIExample  # Uppdaterad katalog till molndalAPIExample eller molndal books
-        run: mvn clean install  # Kör mvn clean install för att installera beroenden och köra tester
+        run: mvn clean install  # Bygger och kör tester för Bookservice-applikationen
+
+      - name: Package the application
+        run: mvn clean package  # Paketerar applikationen
+
+      - name: Upload artifact to S3 and deploy to Elastic Beanstalk
+        run: |
+          aws s3 cp target/webservice-app.jar s3://elasticbeanstalk-eu-north-1-147997133062/ --recursive
+          aws elasticbeanstalk create-application-version --application-name BookserviceAS --version-label `date +%Y%m%d%H%M%S` --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="target/webservice-app.jar"
+          aws elasticbeanstalk update-environment --environment-name BookserviceAS --version-label `date +%Y%m%d%H%M%S`
