@@ -12,9 +12,9 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - cd molndalAPIExample  # Navigera till rätt katalog
-      - mvn install
-      - mvn clean package
+      - cd molndalAPIExample  # Navigera till molndalAPIExample-katalogen
+      - mvn clean install  # Bygger molndalAPIExample
+      - mvn clean package  # Paketerar applikationen
 
   post_build:
     commands:
