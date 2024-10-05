@@ -12,9 +12,9 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - cd molndalAPIExample  # Navigera till molndalAPIExample-katalogen för att hitta pom.xml
-      - mvn clean install
-      - mvn clean package
+      - cd molndalAPIExample  # Navigera till molndalAPIExample-katalogen
+      - mvn clean install     # Kör mvn install från molndalAPIExample-katalogen
+      - mvn clean package     # Paketera applikationen
 
   post_build:
     commands:
@@ -28,5 +28,5 @@ phases:
 
 artifacts:
   files:
-    - molndalAPIExample/target/webservice-app.jar
+    - molndalAPIExample/target/webservice-app.jar  # Anger var JAR-filen är
   discard-paths: yes
