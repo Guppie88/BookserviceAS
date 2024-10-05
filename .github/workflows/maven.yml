@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v4  # Uppdaterad till senaste versionen
         with:
           java-version: '21"
-          distribution: 'temurin'  # Demander Temurin JDK
+          distribution: 'temurin'  # Använder Temurin JDK
           distribution: ''
 
       - name: Cache Maven packages
