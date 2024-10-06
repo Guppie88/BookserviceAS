@@ -11,17 +11,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4  # Senaste versionen av GitHub Actions Checkout
-
+      
       - name: Set up JDK 21
         uses: actions/setup-java@v4  # Senaste versionen av Java Setup Action
         with:
           java-version: '21'
           distribution: 'temurin'
-
+      
       - name: Set up environment variables
         env:
           DB_URL: ${{ secrets.DB_URL }}             # Här hämtas DB_URL från GitHub Secrets
@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "Database URL: $DB_URL"
           echo "Setting up database connection..."
-
+      
       - name: Cache Maven packages
         uses: actions/cache@v4  # Senaste versionen av Cache Action
         with:
@@ -38,10 +38,6 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-
+      
       - name: Install dependencies and run tests
-        run: mvn clean install  # Kör mvn clean install för att bygga och testa
-
-      - name: Package the application
-        run: mvn clean package  # Paketera applikationen
-
+        run: mvn clean install  # Här kör vi endast bygg och tester om nödvändigt (valfritt).

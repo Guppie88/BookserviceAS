@@ -1,20 +1,12 @@
 version: 0.2
-
 phases:
   install:
     runtime-versions:
       java: corretto21
-  
-  pre_build:
-    commands:
-      - echo Nothing to do in the pre_build phase...
-  
   build:
     commands:
       - echo Build started on `date`
-      - mvn clean install  # Kör mvn install från projektets rot
-      - mvn clean package  # Paketera applikationen
-  
+      - mvn clean install   # Kör installation och byggprocess
   post_build:
     commands:
       - echo Build completed on `date`
@@ -27,5 +19,5 @@ phases:
 
 artifacts:
   files:
-    - target/webservice-app.jar  # Anger var JAR-filen är nu när den ligger i rotkatalogen
+    - target/*.jar    # Vi försäkrar oss om att JAR-filen plockas upp här
   discard-paths: yes
