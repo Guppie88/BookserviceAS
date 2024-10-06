@@ -7,15 +7,13 @@ phases:
   
   pre_build:
     commands:
-      - echo Using Secrets and Environment Variables
-      - echo "Database URL: $DB_URL"
-      - echo "Database Username: $DB_USERNAME"
+      - echo Nothing to do in the pre_build phase...
   
   build:
     commands:
       - echo Build started on `date`
-      - mvn clean install     # Kör mvn install från projektets rot
-      - mvn clean package     # Paketera applikationen
+      - mvn clean install  # Kör mvn install från projektets rot
+      - mvn clean package  # Paketera applikationen
   
   post_build:
     commands:
@@ -29,5 +27,5 @@ phases:
 
 artifacts:
   files:
-    - target/webservice-app.jar
+    - target/webservice-app.jar  # Anger var JAR-filen är nu när den ligger i rotkatalogen
   discard-paths: yes
