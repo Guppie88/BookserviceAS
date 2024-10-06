@@ -14,26 +14,26 @@ phases:
     runtime-versions:
       java: corretto21
     commands:
-      - echo Nothing to do in the install phase...
+      - echo "Nothing to do in the install phase..."
   
   pre_build:
     commands:
-      - echo Pre-build phase started on `date`
+      - echo "Pre-build phase started on `date`"
   
   build:
     commands:
-      - echo Build started on `date`
+      - echo "Build started on `date`"
       - mvn clean install
       - mvn clean package
   
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Uploading artifacts to S3...
+      - echo "Build completed on `date`"
+      - echo "Uploading artifacts to S3..."
       - aws s3 cp target/BookserviceAS-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-eu-north-1-147997133062/ --recursive
-      - echo Creating a new application version in Elastic Beanstalk...
+      - echo "Creating a new application version in Elastic Beanstalk..."
       - aws elasticbeanstalk create-application-version --application-name BookserviceAS --version-label `date +%Y%m%d%H%M%S` --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="BookserviceAS-0.0.1-SNAPSHOT.jar"
-      - echo Updating Elastic Beanstalk environment...
+      - echo "Updating Elastic Beanstalk environment..."
       - aws elasticbeanstalk update-environment --environment-name BookserviceAS --version-label `date +%Y%m%d%H%M%S`
 
 artifacts:
