@@ -36,5 +36,5 @@ phases:
 
 artifacts:
   files:
-    - target/webservice-app.jar  # Anger var JAR-filen är nu när den ligger i rotkatalogen
+    - target/webservice-app.jar
   discard-paths: yes
