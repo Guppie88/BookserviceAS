@@ -21,8 +21,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn clean install     # Kör mvn install från projektets rot
-      - mvn clean package     # Paketera applikationen
+      - mvn clean install  # Kör mvn install från projektets rot
+      - mvn clean package  # Paketera applikationen
 
   post_build:
     commands:
