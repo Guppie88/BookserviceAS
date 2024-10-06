@@ -22,6 +22,15 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Set up environment variables
+        env:
+          DB_URL: ${{ secrets.DB_URL }}             # Här hämtas DB_URL från GitHub Secrets
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}   # Här hämtas DB_USERNAME från GitHub Secrets
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}   # Här hämtas DB_PASSWORD från GitHub Secrets
+        run: |
+          echo "Database URL: $DB_URL"
+          echo "Setting up database connection..."
+
       - name: Cache Maven packages
         uses: actions/cache@v4  # Senaste versionen av Cache Action
         with:
@@ -32,3 +41,7 @@ jobs:
 
       - name: Install dependencies and run tests
         run: mvn clean install  # Kör mvn clean install för att bygga och testa
+
+      - name: Package the application
+        run: mvn clean package  # Paketera applikationen
+
