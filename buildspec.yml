@@ -1,49 +1,15 @@
-{
-  "artifacts": {
-    "files": [
-      "target/webservice-app.jar"
-    ],
-    "discard-paths": true
-  },
-  "phases": {
-    "pre_build": {
-      "commands": [
-        "echo Nothing to do in the pre_build phase..."
-      ]
-    },
-    "post_build": {
-      "commands": [
-        "echo Build completed on `date`",
-        "echo Uploading artifacts to S3...",
-        "aws s3 cp target/webservice-app.jar s3://elasticbeanstalk-eu-north-1-147997133062/ --recursive",
-        "echo Creating a new application version in Elastic Beanstalk...",
-        "aws elasticbeanstalk create-application-version --application-name BookserviceAS --version-label `date +%Y%m%d%H%M%S` --source-bundle S3Bucket=\"elasticbeanstalk-eu-north-1-147997133062\",S3Key=\"target/webservice-app.jar\"",
-        "echo Updating Elastic Beanstalk environment...",
-        "aws elasticbeanstalk update-environment --environment-name BookserviceAS --version-label `date +%Y%m%d%H%M%S`"
-      ]
-    },
-    "install": {
-      "runtime-versions": {
-        "java": "corretto21"
-      }
-    },
-    "build": {
-      "commands": [
-        "echo Build started on `date`",
-        "mvn clean install",
-        "mvn clean package"
-      ]
-    }
-  },
-  "version": 0.2,
-  "env": {
-    "variables": {
-      "DB_NAME": "webservice",
-      "DB_SERVER": "webservice-db.chcwmoqw0h8e.eu-north-1.rds.amazonaws.com",
-      "PASSWORD": "Guppie88!",
-      "USER_NAME": "root",
-      "PORT": "5000",
-      "DB_URL": "jdbc:mysql://webservice-db.chcwmoqw0h8e.eu-north-1.rds.amazonaws.com:3306/webservice?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
-    }
-  }
-}
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11 # Använd den Java-version din applikation behöver
+  
+  build:
+    commands:
+      - echo "Building the project..."
+      - mvn clean install # Bygger projektet
+
+artifacts:
+  files:
+    - target/webservice-app.jar # Det färdiga JAR-artefakten att distribuera
