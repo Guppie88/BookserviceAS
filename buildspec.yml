@@ -1,5 +1,14 @@
 version: 0.2
 
+env:
+  variables:
+    DB_NAME: "webservice"
+    DB_SERVER: "webservice-db.chcwmoqw0h8e.eu-north-1.rds.amazonaws.com"
+    DB_URL: "jdbc:mysql://webservice-db.chcwmoqw0h8e.eu-north-1.rds.amazonaws.com:3306/webservice?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+    USER_NAME: "root"
+    PASSWORD: "Guppie88!"
+    PORT: "5000"
+
 phases:
   install:
     runtime-versions:
