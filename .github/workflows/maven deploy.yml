@@ -7,9 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  PROJECT_LOCATION: BookserviceAS/pom.xml
-  ELASTIC_BEANSTALK_APP_NAME: BookserviceAS
-  ELASTIC_BEANSTALK_ENV_NAME: BookserviceAS-env
+  PROJECT_LOCATION: ./pom.xml  # Eftersom pom.xml ligger i root
 
 jobs:
   build:
@@ -25,8 +23,11 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
       
+      - name: List files for verification  # Lägger till detta för att säkerställa filstrukturen
+        run: ls -R
+      
       - name: Build with Maven
-        run: mvn -f ${{ env.PROJECT_LOCATION }} clean package -X  # Aktiverar debug-läge för att se mer detaljerad loggning vid fel
+        run: mvn -f ${{ env.PROJECT_LOCATION }} clean package  # Använder ./pom.xml eftersom den finns i root
       
       - name: Package application
         run: |
@@ -53,7 +54,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1  # Uppdaterat till rätt region
+          aws-region: eu-north-1  # Rätt region
       
       - name: Deploy to Elastic Beanstalk
         run: |
