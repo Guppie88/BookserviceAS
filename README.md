@@ -14,7 +14,7 @@
 
 ## Teknologier
 
-- **Java 22** med Spring Boot
+- **Java 21** med Spring Boot
 - **Spring Data JPA** för databasinteraktion
 - **MySQL** som databas
 - **Maven** för byggsystem
@@ -30,7 +30,7 @@
    ```
 
 2. **Bygg projektet**:
-   Gå till projektmappen `BookserviceAS/molndalAPIExample` och kör följande kommando:
+   Gå till projektmappen `BookserviceAS` och kör följande kommando:
    ```bash
    mvn clean install
    ```

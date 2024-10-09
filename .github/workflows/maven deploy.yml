@@ -1,0 +1,62 @@
+name: Build and Deploy BookserviceAS to Elastic Beanstalk
+
+on:
+  push:
+    branches: [ "main" ]  # Trigga på varje push till 'main'
+  pull_request:
+    branches: [ "main" ]  # Trigga vid pull requests till 'main'
+
+env:
+  PROJECT_LOCATION: BookserviceAS/pom.xml  # Ändra till platsen för din pom.xml-fil
+  ELASTIC_BEANSTALK_APP_NAME: BookserviceAS  # Namnet på din Elastic Beanstalk-applikation
+  ELASTIC_BEANSTALK_ENV_NAME: BookserviceAS-env  # Namnet på din Elastic Beanstalk-miljö
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Kör på senaste Ubuntu-versionen
+    
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4  # Checkar ut koden från repositoryt
+      
+      - name: Set up Corretto 21
+        uses: actions/setup-java@v3  # Ställer in Corretto 21
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+      
+      - name: Build with Maven
+        run: mvn -f ${{ env.PROJECT_LOCATION }} clean package  # Bygger projektet med Maven
+      
+      - name: Package application
+        run: |
+          mkdir -p deploy
+          cp target/*.jar deploy/  # Packar den byggda jar-filen
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4  # Laddar upp artefakten för distribution
+        with:
+          name: deploy-files
+          path: deploy/
+  
+  deploy:
+    runs-on: ubuntu-latest  # Kör deployment steget på Ubuntu
+    
+    needs: build  # Kör detta steg efter att bygget är klart
+    
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4  # Laddar ner den byggda artefakten
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4  # Använder AWS secrets för autentisering
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Ändra till din AWS-region
+      
+      - name: Deploy to Elastic Beanstalk
+        run: |
+          aws s3 cp deploy/*.jar s3://elasticbeanstalk-us-east-1-${{ secrets.AWS_ACCOUNT_ID }}/artifact/
+          aws elasticbeanstalk create-application-version --application-name ${{ env.ELASTIC_BEANSTALK_APP_NAME }} --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-us-east-1-${{ secrets.AWS_ACCOUNT_ID }}",S3Key="artifact/*.jar"
+          aws elasticbeanstalk update-environment --application-name ${{ env.ELASTIC_BEANSTALK_APP_NAME }} --environment-name ${{ env.ELASTIC_BEANSTALK_ENV_NAME }} --version-label ${{ github.run_id }}
