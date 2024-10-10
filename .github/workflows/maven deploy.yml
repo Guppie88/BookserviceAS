@@ -8,6 +8,8 @@ on:
 
 env:
   PROJECT_LOCATION: ./pom.xml  # Eftersom pom.xml ligger i root
+  ELASTIC_BEANSTALK_APP_NAME: "BookserviceAS"  # Lägg till applikationsnamn för Elastic Beanstalk
+  ELASTIC_BEANSTALK_ENV_NAME: "BookserviceAS-env"  # Lägg till miljönamn för Elastic Beanstalk
 
 jobs:
   build:
@@ -23,11 +25,11 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
       
-      - name: List files for verification  # Lägger till detta för att säkerställa filstrukturen
+      - name: List files for verification
         run: ls -R
       
       - name: Build with Maven
-        run: mvn -f ${{ env.PROJECT_LOCATION }} clean package  # Använder ./pom.xml eftersom den finns i root
+        run: mvn -f ${{ env.PROJECT_LOCATION }} clean package
       
       - name: Package application
         run: |
@@ -42,19 +44,20 @@ jobs:
   
   deploy:
     runs-on: ubuntu-latest
-    
     needs: build
     
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
+        with:
+          name: deploy-files
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1  # Rätt region
+          aws-region: eu-north-1
       
       - name: Deploy to Elastic Beanstalk
         run: |
