@@ -1,17 +1,10 @@
-name: Build and Deploy BookserviceAS to AWS
+name: Build and Deploy to AWS
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-env:
-  PROJECT_LOCATION: ./pom.xml
-  ELASTIC_BEANSTALK_APP_NAME: "Bookservice"
-  ELASTIC_BEANSTALK_ENV_NAME: "e-hahppfasmc"
-  AWS_BUCKET_NAME: "elasticbeanstalk-eu-north-1-147997133062"
-  JAR_FILE_NAME: "webservice-0.0.1-SNAPSHOT.jar"
 
 jobs:
   build:
@@ -28,26 +21,24 @@ jobs:
           java-version: '21'
       
       - name: Build with Maven
-        run: mvn clean package -f ${{ env.PROJECT_LOCATION }}
+        run: mvn clean package
       
-      - name: Run tests
-        run: mvn test
-      
-      - name: List files in target directory
-        run: ls -R target
+      - name: Verify target directory exists
+        run: |
+          ls -l target
       
       - name: Archive built JAR
         uses: actions/upload-artifact@v4
         with:
           name: jar-file
-          path: target/${{ env.JAR_FILE_NAME }}
+          path: target/Linux-maven-5cb6fd20bdcde4515cb8484a068d7ccf851bb4cb232611108ed1ac6f54baa677.jar # Exakt filnamn
   
   deploy:
     runs-on: ubuntu-latest
     needs: build
     
     steps:
-      - name: Download artifact
+      - name: Download JAR
         uses: actions/download-artifact@v4
         with:
           name: jar-file
@@ -59,23 +50,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
       
-      - name: List target directory for verification
-        run: ls target  # Verifiera att filen finns
-      
       - name: Upload JAR to S3
-        run: |
-          aws s3 cp target/${{ env.JAR_FILE_NAME }} s3://${{ env.AWS_BUCKET_NAME }}/artifact/
+        run: aws s3 cp target/Linux-maven-5cb6fd20bdcde4515cb8484a068d7ccf851bb4cb232611108ed1ac6f54baa677.jar s3://elasticbeanstalk-eu-north-1-${{ secrets.AWS_ACCOUNT_ID }}/artifact/
       
-      - name: Create new Elastic Beanstalk application version
+      - name: Deploy to Elastic Beanstalk
         run: |
-          aws elasticbeanstalk create-application-version \
-            --application-name ${{ env.ELASTIC_BEANSTALK_APP_NAME }} \
-            --version-label ${{ github.run_id }} \
-            --source-bundle S3Bucket="${{ env.AWS_BUCKET_NAME }}",S3Key="artifact/${{ env.JAR_FILE_NAME }}"
-      
-      - name: Deploy new version to Elastic Beanstalk
-        run: |
-          aws elasticbeanstalk update-environment \
-            --application-name ${{ env.ELASTIC_BEANSTALK_APP_NAME }} \
-            --environment-name ${{ env.ELASTIC_BEANSTALK_ENV_NAME }} \
-            --version-label ${{ github.run_id }}
+          aws elasticbeanstalk create-application-version --application-name Bookservice --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-${{ secrets.AWS_ACCOUNT_ID }}",S3Key="artifact/Linux-maven-5cb6fd20bdcde4515cb8484a068d7ccf851bb4cb232611108ed1ac6f54baa677.jar"
+          aws elasticbeanstalk update-environment --application-name Bookservice --environment-name e-hahppfasmc --version-label ${{ github.run_id }}
