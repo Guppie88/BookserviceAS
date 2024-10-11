@@ -1,11 +1,17 @@
-name: Local Build and Test
+name: Build and Deploy BookserviceAS to AWS
 
-# This section defines when the workflow should trigger
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+env:
+  PROJECT_LOCATION: ./pom.xml  # Eftersom pom.xml ligger i rotkatalogen
+  ELASTIC_BEANSTALK_APP_NAME: "Bookservice"  # Applikationens namn i AWS Elastic Beanstalk
+  ELASTIC_BEANSTALK_ENV_NAME: "e-hahppfasmc"  # Miljönamn i Elastic Beanstalk
+  AWS_BUCKET_NAME: "elasticbeanstalk-eu-north-1-147997133062"  # Din S3-bucket
+  JAR_FILE_NAME: "webservice-0.0.1-SNAPSHOT.jar"  # Din JAR-fil
 
 jobs:
   build:
@@ -22,7 +28,7 @@ jobs:
           java-version: '21'
       
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn clean package -f ${{ env.PROJECT_LOCATION }}
       
       - name: Run tests
         run: mvn test
@@ -34,4 +40,44 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jar-file
-          path: target/*.jar
+          path: target/${{ env.JAR_FILE_NAME }}
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      # Ladda ner artifact (JAR-fil)
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: jar-file
+      
+      # Konfigurera AWS credentials för att kunna deploya
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1  # Region för AWS
+      
+      # Ladda upp JAR-fil till S3
+      - name: Upload JAR to S3
+        run: |
+          aws s3 cp target/${{ env.JAR_FILE_NAME }} s3://${{ env.AWS_BUCKET_NAME }}/artifact/
+      
+      # Skapa en ny applikationsversion i Elastic Beanstalk
+      - name: Create new Elastic Beanstalk application version
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name ${{ env.ELASTIC_BEANSTALK_APP_NAME }} \
+            --version-label ${{ github.run_id }} \
+            --source-bundle S3Bucket="${{ env.AWS_BUCKET_NAME }}",S3Key="artifact/${{ env.JAR_FILE_NAME }}"
+      
+      # Uppdatera Elastic Beanstalk-miljön med den nya versionen
+      - name: Deploy new version to Elastic Beanstalk
+        run: |
+          aws elasticbeanstalk update-environment \
+            --application-name ${{ env.ELASTIC_BEANSTALK_APP_NAME }} \
+            --environment-name ${{ env.ELASTIC_BEANSTALK_ENV_NAME }} \
+            --version-label ${{ github.run_id }}
