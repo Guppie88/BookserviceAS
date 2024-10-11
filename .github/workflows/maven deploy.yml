@@ -45,8 +45,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # refer to GitHub secret
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # refer to GitHub secret
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1  # AWS region
       
       - name: List downloaded files
@@ -58,4 +58,4 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         run: |
           aws elasticbeanstalk create-application-version --application-name Bookservice --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="artifact/webservice-0.0.1-SNAPSHOT.jar"
-          aws elasticbeanstalk update-environment --application-name Bookservice --environment-name e-hahppfasmc --version-label ${{ github.run_id }}
+          aws elasticbeanstalk update-environment --application-name Bookservice --environment-name Bookservice-env --version-label ${{ github.run_id }}
