@@ -73,7 +73,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.1</version> <!-- Se till att du använder senaste versionen -->
+				<version>3.3.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
