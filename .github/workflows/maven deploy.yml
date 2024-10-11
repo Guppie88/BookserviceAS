@@ -47,13 +47,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1  # Lägg till rätt region här
+          aws-region: eu-north-1  # Lägg till rätt region
       
       - name: List downloaded files
         run: ls -l
       
       - name: Upload JAR to S3
-        run: aws s3 cp target/webservice-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-eu-north-1-${{ secrets.AWS_ACCOUNT_ID }}/artifact/
+        run: aws s3 cp webservice-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-eu-north-1-${{ secrets.AWS_ACCOUNT_ID }}/artifact/
       
       - name: Deploy to Elastic Beanstalk
         run: |
