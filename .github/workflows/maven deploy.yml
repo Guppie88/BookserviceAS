@@ -47,15 +47,18 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1  # AWS region
+          aws-region: eu-north-1
       
       - name: List downloaded files
         run: ls -l
       
+      - name: Rename JAR with timestamp
+        run: mv target/webservice-0.0.1-SNAPSHOT.jar target/webservice-${{ github.run_id }}.jar
+      
       - name: Upload JAR to S3
-        run: aws s3 cp webservice-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
+        run: aws s3 cp target/webservice-${{ github.run_id }}.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
       
       - name: Deploy to Elastic Beanstalk
         run: |
-          aws elasticbeanstalk create-application-version --application-name Bookservice --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="artifact/webservice-0.0.1-SNAPSHOT.jar"
+          aws elasticbeanstalk create-application-version --application-name Bookservice --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="artifact/webservice-${{ github.run_id }}.jar"
           aws elasticbeanstalk update-environment --application-name Bookservice --environment-name Bookservice-env --version-label ${{ github.run_id }}
