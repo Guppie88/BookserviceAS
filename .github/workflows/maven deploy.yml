@@ -49,11 +49,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
       
-      - name: List downloaded files
+      - name: Kontrollera arbetskatalog
+        run: pwd
+      
+      - name: Lista filer efter nedladdning
         run: ls -l
       
       - name: Rename JAR with timestamp
         run: mv target/webservice-0.0.1-SNAPSHOT.jar target/webservice-${{ github.run_id }}.jar
+      
+      - name: List files in target directory after rename
+        run: ls -l target
       
       - name: Upload JAR to S3
         run: aws s3 cp target/webservice-${{ github.run_id }}.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
