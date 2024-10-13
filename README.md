@@ -67,7 +67,7 @@ Vi använder **GitHub Actions** för kontinuerlig integration och testning. Work
 
 ## Författare
 
-- **Andrea Sveinsdottir** - [GitHub-profil](https://github.com/Guppie88)9999
+- **Andrea Sveinsdottir** - [GitHub-profil](https://github.com/Guppie88)
 
 ---
 
