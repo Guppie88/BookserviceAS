@@ -51,7 +51,7 @@ jobs:
       - name: Rename JAR with timestamp
         run: mv webservice-0.0.1-SNAPSHOT.jar webservice-${{ github.run_id }}.jar
       
-      - name: List files in target directory after rename
+      - name: List files after rename
         run: ls -l
       
       - name: Upload JAR to S3
