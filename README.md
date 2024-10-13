@@ -82,4 +82,4 @@ Skapa en separat klientapplikation som ansluter till detta API.
 Utöka funktionaliteten med autentisering och säkerhet (exempelvis JWT).
 Eventuell integration med fler AWS-tjänster.
 Författare
-Andrea Sveinsdottir - GitHub-profil
+Andrea Sveinsdottir - https://github.com/Guppie88
