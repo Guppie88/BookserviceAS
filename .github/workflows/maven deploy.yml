@@ -20,7 +20,7 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
       
-      - name: Build with Maven
+      - name: Bygg med Maven
         run: mvn clean package
       
       - name: Kontrollera target-katalogen efter byggning
@@ -42,22 +42,28 @@ jobs:
         with:
           name: jar-file
       
-      - name: Lista nedladdade filer
-        run: ls -l
-      
       - name: Kontrollera arbetskatalog
         run: pwd
       
+      - name: Lista nedladdade filer
+        run: ls -l
+      
       - name: Rename JAR with timestamp
-        run: mv target/webservice-0.0.1-SNAPSHOT.jar target/webservice-${{ github.run_id }}.jar
+        run: mv webservice-0.0.1-SNAPSHOT.jar webservice-${{ github.run_id }}.jar
       
-      - name: List files in target directory after rename
-        run: ls -l target
+      - name: Lista filer efter namnbyte
+        run: ls -l
       
-      - name: Upload JAR to S3
-        run: aws s3 cp target/webservice-${{ github.run_id }}.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
+      - name: Ladda upp JAR till S3
+        run: aws s3 cp webservice-${{ github.run_id }}.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
+      
+      - name: Kontrollera S3-innehåll efter uppladdning
+        run: aws s3 ls s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
       
       - name: Deploy to Elastic Beanstalk
         run: |
           aws elasticbeanstalk create-application-version --application-name Bookservice --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="artifact/webservice-${{ github.run_id }}.jar"
           aws elasticbeanstalk update-environment --application-name Bookservice --environment-name Bookservice-env --version-label ${{ github.run_id }}
+      
+      - name: Kontrollera Elastic Beanstalk versionshistorik
+        run: aws elasticbeanstalk describe-application-versions --application-name Bookservice
