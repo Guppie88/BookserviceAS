@@ -61,3 +61,4 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version --application-name Bookservice --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="artifact/webservice-${{ github.run_id }}.jar"
           aws elasticbeanstalk update-environment --application-name Bookservice --environment-name Bookservice-env --version-label ${{ github.run_id }}
+        continue-on-error: true
