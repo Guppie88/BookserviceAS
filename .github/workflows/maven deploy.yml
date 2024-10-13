@@ -56,7 +56,10 @@ jobs:
         run: ls -l
       
       - name: Rename JAR with timestamp
-        run: mv target/webservice-0.0.1-SNAPSHOT.jar target/webservice-${{ github.run_id }}.jar
+        run: |
+          JAR_FILE=$(ls target/*.jar | head -n 1)
+          echo "Renaming $JAR_FILE to target/webservice-${{ github.run_id }}.jar"
+          mv $JAR_FILE target/webservice-${{ github.run_id }}.jar
       
       - name: List files in target directory after rename
         run: ls -l target

@@ -1,0 +1,9 @@
+com\marcus\webservice\Controller\BooksController.class
+com\marcus\webservice\Models\Books.class
+com\marcus\webservice\Models\Author.class
+com\marcus\webservice\WebserviceApplication.class
+com\marcus\webservice\MyCorsConfig.class
+com\marcus\webservice\Service\BookService.class
+com\marcus\webservice\Service\AuthorService.class
+com\marcus\webservice\Repo\BooksRepo.class
+com\marcus\webservice\Repo\AuthorRepo.class
