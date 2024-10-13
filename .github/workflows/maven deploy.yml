@@ -20,10 +20,10 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
       
-      - name: Bygg med Maven
+      - name: Build with Maven
         run: mvn clean package
       
-      - name: Kontrollera target-katalogen efter byggning
+      - name: List files in target directory
         run: ls -l target
       
       - name: Archive built JAR
@@ -42,28 +42,27 @@ jobs:
         with:
           name: jar-file
       
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+      
       - name: Kontrollera arbetskatalog
         run: pwd
       
-      - name: Lista nedladdade filer
+      - name: Lista filer efter nedladdning
         run: ls -l
       
       - name: Rename JAR with timestamp
         run: mv webservice-0.0.1-SNAPSHOT.jar webservice-${{ github.run_id }}.jar
       
-      - name: Lista filer efter namnbyte
-        run: ls -l
-      
-      - name: Ladda upp JAR till S3
-        run: aws s3 cp webservice-${{ github.run_id }}.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
-      
-      - name: Kontrollera S3-innehåll efter uppladdning
-        run: aws s3 ls s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
-      
-      - name: Deploy to Elastic Beanstalk
+      - name: Kontrollera S3-konfiguration och version
         run: |
-          aws elasticbeanstalk create-application-version --application-name Bookservice --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="artifact/webservice-${{ github.run_id }}.jar"
-          aws elasticbeanstalk update-environment --application-name Bookservice --environment-name Bookservice-env --version-label ${{ github.run_id }}
+          aws --version
+          aws configure list
+          aws sts get-caller-identity
       
-      - name: Kontrollera Elastic Beanstalk versionshistorik
-        run: aws elasticbeanstalk describe-application-versions --application-name Bookservice
+      - name: Upload JAR to S3
+        run: aws s3 cp webservice-${{ github.run_id }}.jar s3
