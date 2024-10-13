@@ -23,7 +23,7 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
       
-      - name: List files in target directory
+      - name: Kontrollera target-katalogen efter byggning
         run: ls -l target
       
       - name: Archive built JAR
@@ -42,29 +42,14 @@ jobs:
         with:
           name: jar-file
       
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1
+      - name: Lista nedladdade filer
+        run: ls -l
       
       - name: Kontrollera arbetskatalog
         run: pwd
       
-      - name: Lista filer efter nedladdning
-        run: ls -l
-      
       - name: Rename JAR with timestamp
-        run: |
-          if [ -f "target/webservice-0.0.1-SNAPSHOT.jar" ]; then
-            mv target/webservice-0.0.1-SNAPSHOT.jar target/webservice-${{ github.run_id }}.jar
-          elif [ -f "target/webservice-0.0.1-SNAPSHOT.jar.original" ]; then
-            mv target/webservice-0.0.1-SNAPSHOT.jar.original target/webservice-${{ github.run_id }}.jar
-          else
-            echo "JAR file not found!"
-            exit 1
-          fi
+        run: mv target/webservice-0.0.1-SNAPSHOT.jar target/webservice-${{ github.run_id }}.jar
       
       - name: List files in target directory after rename
         run: ls -l target
