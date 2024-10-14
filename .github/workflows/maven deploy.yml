@@ -23,7 +23,7 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
       
-      - name: Kontrollera att JAR-filen skapades
+      - name: Kontrollera att JAR-filen skapades i target-katalogen
         run: ls -l target
       
       - name: Archive built JAR
@@ -48,15 +48,17 @@ jobs:
       - name: Lista filer efter nedladdning
         run: ls -l
       
-      # Vi ändrar här så att vi inte refererar till 'target' mappen
+      - name: Kontrollera att JAR-filen finns i target-katalogen efter nedladdning
+        run: ls -l target
+      
       - name: Rename JAR with timestamp
-        run: mv webservice-0.0.1-SNAPSHOT.jar webservice-${{ github.run_id }}.jar
+        run: mv target/webservice-0.0.1-SNAPSHOT.jar target/webservice-${{ github.run_id }}.jar
       
       - name: List files after rename
-        run: ls -l
+        run: ls -l target
       
       - name: Upload JAR to S3
-        run: aws s3 cp webservice-${{ github.run_id }}.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
+        run: aws s3 cp target/webservice-${{ github.run_id }}.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
       
       - name: Deploy to Elastic Beanstalk
         run: |
