@@ -59,12 +59,14 @@ jobs:
       
       - name: Rename JAR with timestamp
         run: mv target/webservice-0.0.1-SNAPSHOT.jar target/webservice-${{ github.run_id }}.jar
+        continue-on-error: true
       
       - name: List files after rename
         run: ls -l target
       
       - name: Upload JAR to S3
         run: aws s3 cp target/webservice-${{ github.run_id }}.jar s3://elasticbeanstalk-eu-north-1-147997133062/artifact/
+        continue-on-error: true
       
       - name: Deploy to Elastic Beanstalk
         run: |
