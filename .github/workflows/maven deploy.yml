@@ -45,10 +45,16 @@ jobs:
       - name: Kontrollera arbetskatalog
         run: pwd
       
-      - name: Lista filer efter nedladdning
+      - name: Lista filer i arbetskatalogen
         run: ls -l
       
-      - name: Kontrollera att JAR-filen finns i target-katalogen efter nedladdning
+      - name: Skapa target-katalog (om den saknas)
+        run: mkdir -p target
+      
+      - name: Flytta nedladdad JAR till target-katalogen
+        run: mv *.jar target/
+      
+      - name: Lista filer efter att JAR-filen har flyttats
         run: ls -l target
       
       - name: Rename JAR with timestamp
@@ -65,3 +71,9 @@ jobs:
           aws elasticbeanstalk create-application-version --application-name Bookservice --version-label ${{ github.run_id }} --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-147997133062",S3Key="artifact/webservice-${{ github.run_id }}.jar"
           aws elasticbeanstalk update-environment --application-name Bookservice --environment-name Bookservice-env --version-label ${{ github.run_id }}
         continue-on-error: true
+      
+      - name: Kontrollera AWS CLI version
+        run: aws --version
+      
+      - name: Verifiera S3-bucket location
+        run: aws s3api get-bucket-location --bucket elasticbeanstalk-eu-north-1-147997133062
