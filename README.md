@@ -4,11 +4,10 @@
 
 ## Funktioner
 
-- **CRUD-funktionalitet** för böcker och författare:
-    - Skapa, uppdatera, hämta och ta bort böcker och författare.
-    - Böcker kan kopplas till författare och hanteras dynamiskt via API:et.
+- **CRUD-funktionalitet** för böcker:
+    - Skapa, uppdatera, hämta och ta bort böcker.
 
-### API-endpoints
+  ### API-endpoints
 
 - **Böcker**:
     - `GET /books`: Hämta alla böcker.
@@ -16,13 +15,6 @@
     - `POST /books`: Skapa en ny bok.
     - `PUT /books/{id}`: Uppdatera en befintlig bok.
     - `DELETE /books/{id}`: Ta bort en bok.
-
-- **Författare**:
-    - `GET /authors`: Hämta alla författare.
-    - `GET /authors/{id}`: Hämta en specifik författare med ID.
-    - `POST /authors`: Skapa en ny författare.
-    - `PUT /authors/{id}`: Uppdatera en befintlig författare.
-    - `DELETE /authors/{id}`: Ta bort en författare.
 
 - **Environment URL**:
     - Applikationen är tillgänglig via:  
@@ -79,7 +71,5 @@ AWS CodePipeline används för att hantera deployment-delen av CI/CD-processen. 
 
 Framtida arbete
 Skapa en separat klientapplikation som ansluter till detta API.
-Utöka funktionaliteten med autentisering och säkerhet (exempelvis JWT).
-Eventuell integration med fler AWS-tjänster.
 Författare
 Andrea Sveinsdottir - https://github.com/Guppie88
