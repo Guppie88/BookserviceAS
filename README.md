@@ -20,8 +20,6 @@ Databasen skapas automatiskt vid applikationens start.
 Alla data finns i minnet och försvinner när applikationen stängs av.
 Konfiguration för lokal miljö finns i application-local.properties:
 
-properties
-Kopiera kod
 # Local H2 Database Configuration
 spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 spring.datasource.driver-class-name=org.h2.Driver
@@ -47,8 +45,6 @@ Applikationen är tillgänglig via:
 http://bookservice-env.eba-bezef5r2.eu-north-1.elasticbeanstalk.com/books
 Konfiguration för AWS-miljö finns i application-aws.properties:
 
-properties
-Kopiera kod
 # AWS MySQL Database Configuration
 spring.datasource.url=jdbc:mysql://webservice-db.chcwmoqw0h8e.eu-north-1.rds.amazonaws.com:3306/webservice?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 spring.datasource.username=
@@ -81,19 +77,16 @@ Installation och användning
    För att klona projektet från GitHub, kör följande kommando i terminalen:
 
 bash
-Kopiera kod
 git clone https://github.com/Guppie88/BookserviceAS.git
 2. Bygg projektet
    Navigera till projektmappen BookserviceAS och bygg projektet genom att köra följande kommando:
 
 bash
-Kopiera kod
 mvn clean install
 3. Kör applikationen lokalt
    För att köra applikationen lokalt med H2-databasen, använd följande kommando:
 
 bash
-Kopiera kod
 mvn spring-boot:run
 Applikationen kommer att vara tillgänglig på http://localhost:5000.
 
@@ -106,7 +99,6 @@ Testning
 Projektet använder JUnit och Mockito för enhetstester. Du kan köra testerna lokalt med följande kommando:
 
 bash
-Kopiera kod
 mvn test
 CI/CD
 GitHub Actions (Build och Test)
@@ -130,8 +122,6 @@ Elastic Beanstalk Deployment: AWS CodePipeline hämtar JAR-filen från S3-bucket
 
 Verifiering och feedback: Efter att deployment-processen är slutförd, är applikationen tillgänglig online. Eventuella fel under processen loggas och kan felsökas via AWS och GitHub Actions-loggar.
 
-Framtida arbete
-Skapa en separat klientapplikation som ansluter till detta API.
 Författare
 Andrea Sveinsdottir
 GitHub-profil: Guppie88
