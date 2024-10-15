@@ -1,6 +1,7 @@
 com\marcus\webservice\Controller\BooksController.class
 com\marcus\webservice\Models\Books.class
 com\marcus\webservice\Models\Author.class
+com\marcus\webservice\Service\DataSourceConfig.class
 com\marcus\webservice\WebserviceApplication.class
 com\marcus\webservice\MyCorsConfig.class
 com\marcus\webservice\Service\BookService.class
