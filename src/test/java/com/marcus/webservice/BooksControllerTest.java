@@ -5,6 +5,7 @@ import com.marcus.webservice.Controller.BooksController;
 import com.marcus.webservice.Models.Author;
 import com.marcus.webservice.Models.Books;
 import com.marcus.webservice.Service.BookService;
+import com.marcus.webservice.Service.AuthorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,11 +32,14 @@ class BooksControllerTest {
     @Mock
     private BookService bookService;
 
+    @Mock
+    private AuthorService authorService; // Mocka även AuthorService
+
     @InjectMocks
     private BooksController booksController;
 
     @Autowired
-    private ObjectMapper objectMapper; // Jackson ObjectMapper för JSON-hantering
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp() {
@@ -95,7 +99,7 @@ class BooksControllerTest {
         mockMvc.perform(post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
-                .andExpect(status().isCreated())  // Uppdaterad till isCreated() för att förvänta sig 201
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").value("New Book"))
                 .andExpect(jsonPath("$.author.name").value("New Author"));
 
@@ -109,6 +113,7 @@ class BooksControllerTest {
         Books updatedBook = new Books(1L, "Updated Book", "555-4443332221", author);
 
         when(bookService.patchBook(any(Books.class), anyLong())).thenReturn(updatedBook);
+        when(authorService.getAuthorById(anyLong())).thenReturn(Optional.of(author)); // Mocka AuthorService
 
         // Konvertera objekt till JSON-sträng
         String jsonContent = objectMapper.writeValueAsString(updatedBook);
@@ -122,6 +127,7 @@ class BooksControllerTest {
                 .andExpect(jsonPath("$.author.name").value("Updated Author"));
 
         verify(bookService, times(1)).patchBook(any(Books.class), eq(1L));
+        verify(authorService, times(1)).getAuthorById(anyLong()); // Verifiera AuthorService
     }
 
     @Test
