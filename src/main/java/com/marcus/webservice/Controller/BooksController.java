@@ -61,6 +61,26 @@ public class BooksController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateOneBook(@PathVariable Long id, @RequestBody Books newBook) {
         try {
+            Author author = newBook.getAuthor();
+
+            // Kontrollera om författaren finns. Om författaren inte har ett ID, spara den först.
+            if (author != null) {
+                if (author.getId() == 0) {
+                    // Om författaren inte är sparad i databasen, spara den.
+                    author = authorService.saveAuthor(author);
+                    newBook.setAuthor(author);
+                } else {
+                    // Hämta den befintliga författaren för att säkerställa att rätt ID används.
+                    Optional<Author> existingAuthor = authorService.getAuthorById(author.getId());
+                    if (existingAuthor.isPresent()) {
+                        newBook.setAuthor(existingAuthor.get());
+                    } else {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author not found");
+                    }
+                }
+            }
+
+            // Uppdatera boken
             Books patchedBook = bookService.patchBook(newBook, id);
             return ResponseEntity.ok(patchedBook);
         } catch (Exception e) {
