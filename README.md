@@ -124,4 +124,4 @@ Verifiering och feedback: Efter att deployment-processen är slutförd, är appl
 
 Författare
 Andrea Sveinsdottir
-GitHub-profil: Guppie88
+GitHub-profil: Guppie88--
